@@ -22,4 +22,9 @@ export class AuthController {
     }
     return this.authService.login(user);
   }
+
+  @Post('logout')
+  logout () {
+    return { message: 'Logged out successfully' };
+  }
 }
