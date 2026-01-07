@@ -34,8 +34,35 @@ export class AuthService {
       sub: user.id,
       roles: user.roles.map((role) => role.name),
     };
+    const accessToken = this.jwtService.sign(payload, {
+      expiresIn: '15m',
+    });
+
+    const refreshToken = this.jwtService.sign(
+      { sub: user.id },
+      {
+        secret: process.env.REFRESH_TOKEN_SECRET,
+        expiresIn: '7d',
+      },
+    );
     return {
-      access_token: this.jwtService.sign(payload),
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  async refreshToken(token) {
+    const payload = this.jwtService.verify(token, {
+      secret: process.env.REFRESH_TOKEN_SECRET,
+    });
+
+    return {
+      accessToken: this.jwtService.sign(
+        {
+          sub: payload.sub,
+        },
+        { expiresIn: '15m' },
+      ),
     };
   }
 

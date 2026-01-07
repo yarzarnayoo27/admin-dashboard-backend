@@ -19,7 +19,7 @@ export class UsersService {
     const userId = Number(id);
     return await this.userRepository.findOne({
       where: { id: userId },
-      //   relations: ['roles'],
+        relations: ['roles'],
     });
   }
 
