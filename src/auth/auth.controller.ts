@@ -23,7 +23,6 @@ export class AuthController {
 
   @Post('login')
   async login(
-    @Req() req,
     @Res({ passthrough: true }) res: Response,
     @Body() loginDto: LoginDto,
   ) {
@@ -44,8 +43,8 @@ export class AuthController {
   }
 
   @Post('refresh-token')
-  async refreshToken(req: Request) {
-    const token = req.cookies.refresh_token;
+  async refreshToken(@Req() req: Request) {
+    const token = req.cookies?.refresh_token;
     return this.authService.refreshToken(token);
   }
 
